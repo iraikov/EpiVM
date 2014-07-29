@@ -20,6 +20,12 @@ strToInt (x:String) -> Int =
 printInt (x:Int) -> Unit =
     foreign Unit "printInt" (x:Int)
 
+strToFloat (x:String) -> Float =
+    foreign Float "strToFloat" (x:String)
+
+floatToStr (x:Float) -> String =
+    foreign String "floatToStr" (x:Float)
+
 -- String operations
 
 append (x:String, y:String) -> String =
@@ -41,6 +47,12 @@ subBig (x:BigInt, y:BigInt) -> BigInt =
 
 mulBig (x:BigInt, y:BigInt) -> BigInt =
    foreign BigInt "mulBig" (x:BigInt, y:BigInt)
+
+modBig (x:BigInt,y:BigInt) -> BigInt =
+    foreign BigInt "modBig" (x:BigInt,y:BigInt)
+
+divBig (x:BigInt,y:BigInt) -> BigInt =
+    foreign BigInt "divBig" (x:BigInt,y:BigInt)
 
 eqBig (x:BigInt, y:BigInt) -> Bool =
    foreign Int "eqBig" (x:BigInt, y:BigInt)
