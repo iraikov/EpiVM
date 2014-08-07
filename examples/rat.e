@@ -1,4 +1,3 @@
-include "Prelude.e"
 
 {- Poor man's rational arithmetic -}
 
