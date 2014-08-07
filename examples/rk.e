@@ -1,3 +1,6 @@
+
+{- Runge-Kutta methods for numerical integration of ordinary differential equations -}
+
 include "Prelude.e"
 include "option.e"
 include "list.e"
@@ -34,7 +37,8 @@ ratToRCLs (xs: Data) -> Data = map (ratToRCL, xs)
 
 ratToReals (xs: Data) -> Data = map (fromRational, xs)
 
-m_scale (sc_fn: Fun,s: Float,v: Any) -> Data =
+m_scale (sc_fn: Fun) -> Data =
+  \(s: Float,v: Any) =
     if s == 0.0
     then (NONE)
     else (if s == 1.0
@@ -46,10 +50,20 @@ m_scale (sc_fn: Fun,s: Float,v: Any) -> Data =
    un-necessary multiplications and additions -}
 
 k_sum (sc_fn: Fun, sum_fn: Fun, h: Float) -> Data =
+   \rcl : Data . \ks : Data .
+    let ns = case rcl of { Con 1 (d,ns) => ns } in
+    let ns_ks = zip (ns,ks) in
+	sc_fn (divF (h,d), foldl1 sum_fn (mapPartial (m_scale sc_fn) ns_ks))
 
+
+{-
+fun k_sum (sc_fn: real * 'a -> 'a, 
+	   sum_fn: 'a * 'a -> 'a, 
+	   h: real) 
 	  ((d,ns), ks) =
-    let ns_ks = zip (ns,ks)
+    let 
+	val ns_ks = ListPair.zip (ns,ks)
     in
-	sc_fn (Real./ (h,d), foldl1 sum_fn (mapPartial (m_scale sc_fn) ns_ks  ))
+	sc_fn (Real./ (h,d), foldl1 sum_fn (List.mapPartial (m_scale sc_fn) ns_ks  ))
     end
-
+-}
